@@ -59,7 +59,6 @@ function generateGrid() {
 generateGrid()
 
 
-
 // GAME FUNCTIONALITY
 
 // ELEMENTS
