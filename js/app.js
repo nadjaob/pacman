@@ -57,3 +57,77 @@ function generateGrid() {
 }
 
 generateGrid()
+
+
+
+// GAME FUNCTIONALITY
+
+// ELEMENTS
+
+const startButton = document.querySelector('.start-button')
+const livesElement = document.querySelector('.lives')
+const scoreElement = document.querySelector('.score')
+
+const overlayContainer = document.querySelector('.overlay-container')
+const textOverlay = document.querySelector('.text-overlay')
+
+
+// VARIABLES
+
+const pacmanStartPosition = 325
+let pacmanCurrentPosition = 325
+
+const ghostOneStartPosition = 157
+let ghostOneCurrentPosition = 157
+
+const ghostTwoStartPosition = 199
+let ghostTwoCurrentPosition = 199
+
+const ghostThreeStartPosition = 198
+let ghostThreeCurrentPosition = 198
+
+const ghostFourStartPosition = 200
+let ghostFourCurrentPosition = 200
+
+let lives = 3
+let score = 0
+let goal = 1
+
+const pointsDot = 1
+const pointsPowerPallet = 50
+const pointsGhost = 100
+
+const delayStartGame = 6000
+
+
+
+function startGame() {
+
+  // TEXT OVERLAY 'READY'
+  overlayContainer.style.display = 'block'
+  textOverlay.innerHTML = '<h2>READY?</h2>'
+  setTimeout(() => textOverlay.innerHTML = '<h2>3</h2>', delayStartGame * 0.25)
+  setTimeout(() => textOverlay.innerHTML = '<h2>2</h2>', delayStartGame * 0.5)
+  setTimeout(() => textOverlay.innerHTML = '<h2>1</h2>', delayStartGame * 0.75)
+  setTimeout(() => overlayContainer.style.display = 'none', delayStartGame)
+
+  
+
+}
+
+
+
+function movePacman(event) {
+  const key = event.keyCode
+  const up = 38
+  const down = 40
+  const left = 37
+  const right = 39
+}
+
+
+// EVENTS
+
+startButton.addEventListener('click', startGame)
+
+document.addEventListener('keydown', movePacman)
