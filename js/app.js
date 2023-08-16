@@ -639,7 +639,25 @@ function ghostDies() {
 
 
 function endGame() {
+  // STOP PACMAN
+  document.removeEventListener('keydown', movePacman)
 
+  // STOP GHOSTS MOVING
+  clearInterval(intervalGhost1)
+  clearInterval(intervalGhost2)
+  clearInterval(intervalGhost3)
+  clearInterval(intervalGhost4)
+
+  // SHOW SCORE WITH TEXTOVERLAY
+  setTimeout(function() {
+    overlayContainer.style.display = 'block'
+    if (lives === 0) {
+      textOverlay.innerHTML = `<h2>GAME OVER!<br>SCORE: ${score}</h2>`
+    } else {
+      textOverlay.innerHTML = `<h2>YOU WON!<br>SCORE: ${score}</h2>` 
+    }
+  }, speedPacman)
+  
 }
 
 
