@@ -132,6 +132,14 @@ const pointsDot = 1
 const pointsPowerPallet = 50
 const pointsGhost = 100
 
+// HUNTING
+
+let mood = 'normal'
+let ghostOneDied = false
+let ghostTwoDied = false
+let ghostThreeDied = false
+let ghostFourDied = false
+
 // START GAME
 
 const delayStartGame = 6000
@@ -329,6 +337,20 @@ function addPacman() {
     // setTimeout(stopHunting, 20000)
   }
 
+  // PACMAN MEETS GHOST AND EATS OR DIES
+  if (pacmanCurrentPosition === ghostOneCurrentPosition) {
+    pacmanDies()
+  }
+  if (pacmanCurrentPosition === ghostTwoCurrentPosition) {
+    pacmanDies()
+  }
+  if (pacmanCurrentPosition === ghostThreeCurrentPosition) {
+    pacmanDies()
+  }
+  if (pacmanCurrentPosition === ghostFourCurrentPosition) {
+    pacmanDies()
+  }
+
   // PLAYER WINS WHEN GOAL REACHED
   if (goal === dots.length + powerPallets.length) {
     endGame()
@@ -361,6 +383,15 @@ function moveGhostOne() {
 
     cells[ghostOneCurrentPosition].classList.add('ghost-one')
 
+    // GHOST EATS OR DIES
+    if (ghostOneCurrentPosition === pacmanCurrentPosition) {
+      if (mood === 'hunting' && ghostOneDied === false) {
+        ghostDies()
+      } else {
+        pacmanDies()
+      }
+    }
+
 
       
   }, speedGhost)
@@ -385,6 +416,15 @@ function moveGhostTwo() {
       ghostTwoCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
       cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+
+      // GHOST EATS OR DIES
+      if (ghostTwoCurrentPosition === pacmanCurrentPosition) {
+        if (mood === 'hunting' && ghostTwoDied === false) {
+          ghostDies()
+        } else {
+          pacmanDies()
+        }
+      }
 
       
     }, speedGhost)
@@ -415,7 +455,14 @@ function moveGhostThree() {
 
       cells[ghostThreeCurrentPosition].classList.add('ghost-three')
       
-
+      // GHOST EATS OR DIES
+      if (ghostThreeCurrentPosition === pacmanCurrentPosition) {
+        if (mood === 'hunting' && ghostThreeDied === false) {
+          ghostDies()
+        } else {
+          pacmanDies()
+        }
+      }
 
     }, speedGhost)
   }, speedGhost * 3)
@@ -445,12 +492,44 @@ function moveGhostFour() {
 
       cells[ghostFourCurrentPosition].classList.add('ghost-four')
       
-      
+      // GHOST EATS OR DIES
+      if (ghostFourCurrentPosition === pacmanCurrentPosition) {
+        if (mood === 'hunting' && ghostFourDied === false) {
+          ghostDies()
+        } else {
+          pacmanDies()
+        }
+      }
 
     }, speedGhost)
   }, speedGhost * 4)
 }
 
+
+
+function pacmanDies() {
+  lives--
+  livesElement.innerHTML = lives
+
+  // STOP PACMAN
+  clearInterval(intervalMoveUp)
+  clearInterval(intervalMoveDown)
+  clearInterval(intervalMoveLeft)
+  clearInterval(intervalMoveRight)
+
+  removePacman()
+  pacmanCurrentPosition = pacmanStartPosition
+
+  if (lives === 0) {
+    endGame()
+  } else {
+    addPacman()
+  }
+}
+
+function ghostDies() {
+
+}
 
 
 function endGame() {
