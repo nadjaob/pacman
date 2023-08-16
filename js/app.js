@@ -571,8 +571,50 @@ function pacmanDies() {
   }
 }
 
-function ghostDies() {
 
+// GHOSTS GO BACK TO START POSITION
+function ghostDies() {
+  updateScore(pointsGhost)
+
+  // GHOST ONE
+  if (pacmanCurrentPosition === ghostOneCurrentPosition) {
+    clearInterval(intervalGhost1)
+    cells[ghostOneCurrentPosition].classList.remove('ghost-blue')
+    ghostOneCurrentPosition = ghostOneStartPosition
+    cells[ghostOneStartPosition].classList.add('ghost-one')
+    ghostOneDied = true
+    moveGhostOne()
+  }
+
+  // GHOST TWO
+  if (pacmanCurrentPosition === ghostTwoCurrentPosition) {
+    clearInterval(intervalGhost2)
+    cells[ghostTwoCurrentPosition].classList.remove('ghost-blue')
+    ghostTwoCurrentPosition = ghostTwoStartPosition
+    cells[ghostTwoStartPosition].classList.add('ghost-two')
+    ghostTwoDied = true
+    moveGhostTwo()
+  }
+
+  // GHOST THREE
+  if (pacmanCurrentPosition === ghostThreeCurrentPosition) {
+    clearInterval(intervalGhost3)
+    cells[ghostThreeCurrentPosition].classList.remove('ghost-blue')
+    ghostThreeCurrentPosition = ghostThreeStartPosition
+    cells[ghostThreeStartPosition].classList.add('ghost-three')
+    ghostThreeDied = true
+    moveGhostThree()
+  }
+
+  // GHOST FOUR
+  if (pacmanCurrentPosition === ghostFourCurrentPosition) {
+    clearInterval(intervalGhost4)
+    cells[ghostFourCurrentPosition].classList.remove('ghost-blue')
+    ghostFourCurrentPosition = ghostFourStartPosition
+    cells[ghostFourStartPosition].classList.add('ghost-four')
+    ghostFourDied = true
+    moveGhostFour()
+  }
 }
 
 
