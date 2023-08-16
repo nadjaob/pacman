@@ -84,7 +84,10 @@ const scoreElement = document.querySelector('.score')
 const overlayContainer = document.querySelector('.overlay-container')
 const textOverlay = document.querySelector('.text-overlay')
 
+// AUDIOS
 const intro = document.querySelector('#audio-intro')
+const soundPacmanDies = document.querySelector('#pacman-dies')
+const soundDot = document.querySelector('#dot')
 
 
 // VARIABLES
@@ -192,11 +195,12 @@ function startGame() {
 
   // AUDIO INTRO
   intro.play()
+  intro.volume = 0.1
   // setTimeout(() => {
   //   intro.pause()
   //   intro.currentTime = 0
   // }, delayStartGame - 600)
-  intro.volume = 0.1
+  
 
   // START GAME AFTER OVERLAY
   intervalGameStart = setTimeout(() => {
@@ -318,9 +322,12 @@ function movePacman(event) {
       }
   
       if (pacmanCurrentPosition === 189) {
-        removePacman()
-        pacmanCurrentPosition = 209
-        addPacman()
+        setTimeout(function() {
+          removePacman()
+          pacmanCurrentPosition = 209
+          addPacman()
+        }, speedPacman / 2)
+        
       }
     }, speedPacman)
   }
@@ -340,11 +347,13 @@ function movePacman(event) {
         pacmanCurrentPosition++
         addPacman()
       }
-  
+      // GO THROUGH TUNNEL
       if (pacmanCurrentPosition === 209) {
-        removePacman()
-        pacmanCurrentPosition = 189
-        addPacman()
+        setTimeout(function() {
+          removePacman()
+          pacmanCurrentPosition = 189
+          addPacman()
+        }, speedPacman / 2)
       }
     }, speedPacman)
   }
@@ -362,6 +371,8 @@ function addPacman() {
   // PACMAN EATS DOT
   cells[pacmanCurrentPosition].classList.add('pacman', currentDirection)
   if (cells[pacmanCurrentPosition].classList.contains('dots')) {
+    soundDot.play()
+    soundDot.volume = 0.1
     updateScore(pointsDot)
     goal++
     cells[pacmanCurrentPosition].classList.remove('dots')
@@ -602,6 +613,9 @@ function moveGhostFour() {
 function pacmanDies() {
   lives--
   livesElement.innerHTML = lives
+
+  soundPacmanDies.play()
+  soundPacmanDies.volume = 0.3
 
   // STOP PACMAN
   clearInterval(intervalMoveUp)
