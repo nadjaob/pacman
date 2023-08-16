@@ -84,6 +84,8 @@ const scoreElement = document.querySelector('.score')
 const overlayContainer = document.querySelector('.overlay-container')
 const textOverlay = document.querySelector('.text-overlay')
 
+const intro = document.querySelector('#audio-intro')
+
 
 // VARIABLES
 
@@ -124,9 +126,9 @@ let intervalGhost4
 
 // SCORE AND LIVES
 
-let lives = 3
-let score = 0
-let goal = 1
+let lives
+let score
+let goal
 
 const pointsDot = 1
 const pointsPowerPallet = 50
@@ -169,6 +171,18 @@ function startGame() {
   clearInterval(intervalGhost3)
   clearInterval(intervalGhost4)
 
+  // MUSIC STOPS FROM GAME BEFORE
+  intro.pause()
+  intro.currentTime = 0
+
+  // AUDIO INTRO
+  intro.play()
+  // setTimeout(() => {
+  //   intro.pause()
+  //   intro.currentTime = 0
+  // }, delayStartGame - 600)
+  intro.volume = 0.1
+
   // START GAME AFTER OVERLAY
   setTimeout(() => {
     resetDotsAndPowerPallets()
@@ -180,8 +194,6 @@ function startGame() {
     moveGhostFour()
     stopHunting()
   }, delayStartGame)
-
-  
 }
 
 function resetGame() {
@@ -190,6 +202,7 @@ function resetGame() {
   livesElement.innerHTML = lives
   score = 0
   scoreElement.innerHTML = score
+  goal = 1
   resetPacman()
   resetGhosts()
 }
@@ -648,6 +661,10 @@ function endGame() {
   clearInterval(intervalGhost2)
   clearInterval(intervalGhost3)
   clearInterval(intervalGhost4)
+
+  // MUSIC STOPS
+  intro.pause()
+  intro.currentTime = 0
 
   // SHOW SCORE WITH TEXTOVERLAY
   setTimeout(function() {
