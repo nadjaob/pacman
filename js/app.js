@@ -178,6 +178,7 @@ function startGame() {
     moveGhostTwo()
     moveGhostThree()
     moveGhostFour()
+    stopHunting()
   }, delayStartGame)
 
   
@@ -203,16 +204,16 @@ function resetPacman() {
 
 // GIVE GHOSTS START POSITION
 function resetGhosts() {
-  // // REMOVE GHOSTS FROM BOARD
-  // cells[ghostOneCurrentPosition].classList.remove('ghost-one')
-  // cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
-  // cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
-  // cells[ghostFourCurrentPosition].classList.remove('ghost-four')
-  // // RELOCATE GHOSTS TO START POSITION
-  // ghostOneCurrentPosition = ghostOneStartPosition
-  // ghostTwoCurrentPosition = ghostTwoStartPosition
-  // ghostThreeCurrentPosition = ghostThreeStartPosition
-  // ghostFourCurrentPosition = ghostFourStartPosition
+  // REMOVE GHOSTS FROM BOARD
+  cells[ghostOneCurrentPosition].classList.remove('ghost-one', 'ghost-blue')
+  cells[ghostTwoCurrentPosition].classList.remove('ghost-two', 'ghost-blue')
+  cells[ghostThreeCurrentPosition].classList.remove('ghost-three', 'ghost-blue')
+  cells[ghostFourCurrentPosition].classList.remove('ghost-four', 'ghost-blue')
+  // RELOCATE GHOSTS TO START POSITION
+  ghostOneCurrentPosition = ghostOneStartPosition
+  ghostTwoCurrentPosition = ghostTwoStartPosition
+  ghostThreeCurrentPosition = ghostThreeStartPosition
+  ghostFourCurrentPosition = ghostFourStartPosition
   // ADD GHOSTS TO START POSITION
   cells[ghostOneStartPosition].classList.add('ghost-one')
   cells[ghostTwoStartPosition].classList.add('ghost-two')
