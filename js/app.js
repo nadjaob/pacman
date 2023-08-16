@@ -134,7 +134,7 @@ const pointsGhost = 100
 
 // HUNTING
 
-let mood = 'normal'
+let mode = 'normal'
 let ghostOneDied = false
 let ghostTwoDied = false
 let ghostThreeDied = false
@@ -334,33 +334,33 @@ function addPacman() {
     goal++
     cells[pacmanCurrentPosition].classList.remove('power-pallet')
     hunt()
-    // setTimeout(stopHunting, 20000)
+    setTimeout(stopHunting, 8000)
   }
 
   // PACMAN MEETS GHOST AND EATS OR DIES
   if (pacmanCurrentPosition === ghostOneCurrentPosition) {
-    if (mood === 'hunting' && ghostOneDied === false) {
+    if (mode === 'hunting' && ghostOneDied === false) {
       ghostDies()
     } else {
       pacmanDies()
     }
   }
   if (pacmanCurrentPosition === ghostTwoCurrentPosition) {
-    if (mood === 'hunting' && ghostTwoDied === false) {
+    if (mode === 'hunting' && ghostTwoDied === false) {
       ghostDies()
     } else {
       pacmanDies()
     }
   }
   if (pacmanCurrentPosition === ghostThreeCurrentPosition) {
-    if (mood === 'hunting' && ghostThreeDied === false) {
+    if (mode === 'hunting' && ghostThreeDied === false) {
       ghostDies()
     } else {
       pacmanDies()
     }
   }
   if (pacmanCurrentPosition === ghostFourCurrentPosition) {
-    if (mood === 'hunting' && ghostFourDied === false) {
+    if (mode === 'hunting' && ghostFourDied === false) {
       ghostDies()
     } else {
       pacmanDies()
@@ -382,7 +382,16 @@ function clearIntervalsPacmanMoving() {
 }
 
 function hunt() {
-  mood = 'hunting'
+  mode = 'hunting'
+  ghostOneDied = false
+  ghostTwoDied = false
+  ghostThreeDied = false
+  ghostFourDied = false
+}
+
+
+function stopHunting() {
+  mode = 'normal'
   ghostOneDied = false
   ghostTwoDied = false
   ghostThreeDied = false
@@ -405,7 +414,7 @@ function moveGhostOne() {
     ghostOneCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
     // CHANGE COLOR DURING HUNT
-    if (mood === 'hunting' && ghostOneDied === false) {
+    if (mode === 'hunting' && ghostOneDied === false) {
       cells[ghostOneCurrentPosition].classList.add('ghost-blue')
       // OTHERWISE NORMAL COLOR
     } else {
@@ -414,7 +423,7 @@ function moveGhostOne() {
 
     // GHOST EATS OR DIES
     if (ghostOneCurrentPosition === pacmanCurrentPosition) {
-      if (mood === 'hunting' && ghostOneDied === false) {
+      if (mode === 'hunting' && ghostOneDied === false) {
         ghostDies()
       } else {
         pacmanDies()
@@ -444,7 +453,7 @@ function moveGhostTwo() {
       ghostTwoCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
       // CHANGE COLOR DURING HUNT
-      if (mood === 'hunting' && ghostTwoDied === false) {
+      if (mode === 'hunting' && ghostTwoDied === false) {
         cells[ghostTwoCurrentPosition].classList.add('ghost-blue')
         // OTHERWISE NORMAL COLOR
       } else {
@@ -453,7 +462,7 @@ function moveGhostTwo() {
 
       // GHOST EATS OR DIES
       if (ghostTwoCurrentPosition === pacmanCurrentPosition) {
-        if (mood === 'hunting' && ghostTwoDied === false) {
+        if (mode === 'hunting' && ghostTwoDied === false) {
           ghostDies()
         } else {
           pacmanDies()
@@ -487,7 +496,7 @@ function moveGhostThree() {
       ghostThreeCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
       // CHANGE COLOR DURING HUNT
-      if (mood === 'hunting' && ghostThreeDied === false) {
+      if (mode === 'hunting' && ghostThreeDied === false) {
         cells[ghostThreeCurrentPosition].classList.add('ghost-blue')
         // OTHERWISE NORMAL COLOR
       } else {
@@ -496,7 +505,7 @@ function moveGhostThree() {
       
       // GHOST EATS OR DIES
       if (ghostThreeCurrentPosition === pacmanCurrentPosition) {
-        if (mood === 'hunting' && ghostThreeDied === false) {
+        if (mode === 'hunting' && ghostThreeDied === false) {
           ghostDies()
         } else {
           pacmanDies()
@@ -529,7 +538,7 @@ function moveGhostFour() {
       ghostFourCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
       // CHANGE COLOR DURING HUNT
-      if (mood === 'hunting' && ghostFourDied === false) {
+      if (mode === 'hunting' && ghostFourDied === false) {
         cells[ghostFourCurrentPosition].classList.add('ghost-blue')
         // OTHERWISE NORMAL COLOR
       } else {
@@ -538,7 +547,7 @@ function moveGhostFour() {
       
       // GHOST EATS OR DIES
       if (ghostFourCurrentPosition === pacmanCurrentPosition) {
-        if (mood === 'hunting' && ghostFourDied === false) {
+        if (mode === 'hunting' && ghostFourDied === false) {
           ghostDies()
         } else {
           pacmanDies()
