@@ -134,6 +134,13 @@ const pointsDot = 1
 const pointsPowerPallet = 50
 const pointsGhost = 100
 
+// TEXT OVERLAY
+
+let intervalOverlay1
+let intervalOverlay2
+let intervalOverlay3
+let intervalOverlay4
+
 // HUNTING
 
 let mode = 'normal'
@@ -145,6 +152,7 @@ let ghostFourDied = false
 // START GAME
 
 const delayStartGame = 6000
+let intervalGameStart
 
 // PATH
 
@@ -154,13 +162,20 @@ const path = dots.concat(powerPallets) // path contains the number now
 
 function startGame() {
 
+  // CLEAR TEXT OVERLAY 'READY'
+  clearInterval(intervalOverlay1)
+  clearInterval(intervalOverlay2)
+  clearInterval(intervalOverlay3)
+  clearInterval(intervalOverlay4)
+  clearInterval(intervalGameStart)
+
   // TEXT OVERLAY 'READY'
   overlayContainer.style.display = 'block'
   textOverlay.innerHTML = '<h2>READY?</h2>'
-  setTimeout(() => textOverlay.innerHTML = '<h2>3</h2>', delayStartGame * 0.25)
-  setTimeout(() => textOverlay.innerHTML = '<h2>2</h2>', delayStartGame * 0.5)
-  setTimeout(() => textOverlay.innerHTML = '<h2>1</h2>', delayStartGame * 0.75)
-  setTimeout(() => overlayContainer.style.display = 'none', delayStartGame)
+  intervalOverlay1 = setTimeout(() => textOverlay.innerHTML = '<h2>3</h2>', delayStartGame * 0.25)
+  intervalOverlay2 = setTimeout(() => textOverlay.innerHTML = '<h2>2</h2>', delayStartGame * 0.5)
+  intervalOverlay3 = setTimeout(() => textOverlay.innerHTML = '<h2>1</h2>', delayStartGame * 0.75)
+  intervalOverlay4 = setTimeout(() => overlayContainer.style.display = 'none', delayStartGame)
 
   // STOP PACMAN
   document.removeEventListener('keydown', movePacman)
@@ -184,7 +199,7 @@ function startGame() {
   intro.volume = 0.1
 
   // START GAME AFTER OVERLAY
-  setTimeout(() => {
+  intervalGameStart = setTimeout(() => {
     resetDotsAndPowerPallets()
     resetGame()
     document.addEventListener('keydown', movePacman)
@@ -320,7 +335,6 @@ function movePacman(event) {
   
     // KEEP MOVING RIGHT
     intervalMoveRight = setInterval(function() {
-      console.log('moving right')
       if (path.includes(pacmanCurrentPosition + 1)) {
         removePacman()
         pacmanCurrentPosition++
@@ -597,6 +611,7 @@ function pacmanDies() {
 
   removePacman()
   pacmanCurrentPosition = pacmanStartPosition
+  currentDirection = 'none'
 
   if (lives === 0) {
     endGame()
