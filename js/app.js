@@ -85,6 +85,8 @@ const overlayContainer = document.querySelector('.overlay-container')
 const textOverlay = document.querySelector('.text-overlay')
 
 // AUDIOS
+
+const volumeOn = document.querySelector('.volume')
 const intro = document.querySelector('#audio-intro')
 const soundPacmanDies = document.querySelector('#pacman-dies')
 const soundDot = document.querySelector('#dot')
@@ -161,7 +163,17 @@ let intervalGameStart
 
 const path = dots.concat(powerPallets) // path contains the number now
 
+// SOUND
 
+let sound
+
+
+
+// FUNCTIONS
+
+// SOUND ON
+
+volumeUp()
 
 function startGame() {
 
@@ -182,6 +194,7 @@ function startGame() {
 
   // STOP PACMAN
   document.removeEventListener('keydown', movePacman)
+  clearIntervalsPacmanMoving()
 
   // STOP GHOSTS FROM MOVING
   clearInterval(intervalGhost1)
@@ -195,7 +208,6 @@ function startGame() {
 
   // AUDIO INTRO
   intro.play()
-  intro.volume = 0.1
   // setTimeout(() => {
   //   intro.pause()
   //   intro.currentTime = 0
@@ -372,7 +384,6 @@ function addPacman() {
   cells[pacmanCurrentPosition].classList.add('pacman', currentDirection)
   if (cells[pacmanCurrentPosition].classList.contains('dots')) {
     soundDot.play()
-    soundDot.volume = 0.1
     updateScore(pointsDot)
     goal++
     cells[pacmanCurrentPosition].classList.remove('dots')
@@ -615,7 +626,6 @@ function pacmanDies() {
   livesElement.innerHTML = lives
 
   soundPacmanDies.play()
-  soundPacmanDies.volume = 0.3
 
   // STOP PACMAN
   clearInterval(intervalMoveUp)
@@ -707,7 +717,33 @@ function endGame() {
   
 }
 
+function turnVolumeOn() {
+  if (sound === 'on') {
+    volumeDown()
+  } else {
+    volumeUp()
+  }
+
+  
+}
+
+function volumeUp() {
+  intro.volume = 0.3
+  soundDot.volume = 0.3
+  soundPacmanDies.volume = 0.3
+  sound = 'on'
+}
+
+function volumeDown() {
+  intro.volume = 0
+  soundDot.volume = 0
+  soundPacmanDies.volume = 0
+  sound = 'off'
+}
+
+
 
 // EVENTS
 
 startButton.addEventListener('click', startGame)
+volumeOn.addEventListener('click', turnVolumeOn)

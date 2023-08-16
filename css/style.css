@@ -82,9 +82,12 @@ h1 span {
 .button-container {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
   max-height: 66px;
   position: relative;
   z-index: 2;
+  padding-bottom: 20px;
 }
 
 .start-button {
@@ -94,11 +97,11 @@ h1 span {
   font-weight: 900;
   font-size: 1.1rem;
   box-shadow: 3px 2px 0px black;
-  margin-bottom: 20px;
   cursor: pointer;
 }
 
 .start-button:active {
+  box-shadow: none;
   position: relative;
   top: 2px;
   left: 3px;
@@ -106,6 +109,17 @@ h1 span {
 
 .start-button:focus-visible {
   outline: none;
+}
+
+
+/* SOUND ICON */
+
+.volume {
+  display: flex;
+  justify-content: right;
+  padding: 0px 35px 5px;
+  z-index: 2;
+  position: relative;
 }
 
 
@@ -138,7 +152,7 @@ h1 span {
 .grid-wrapper {
   display: flex;
   justify-content: center;
-  margin: 20px 0 30px;
+  margin: 0px 0 30px;
   position: relative;
   z-index: 2;
 }
