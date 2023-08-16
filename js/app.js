@@ -115,6 +115,13 @@ let ghostThreeCurrentPosition = 198
 const ghostFourStartPosition = 200
 let ghostFourCurrentPosition = 200
 
+const speedGhost = 300
+
+let intervalGhost1
+let intervalGhost2
+let intervalGhost3
+let intervalGhost4
+
 // SCORE AND LIVES
 
 let lives = 3
@@ -150,10 +157,10 @@ function startGame() {
     resetDotsAndPowerPallets()
     resetGame()
     document.addEventListener('keydown', movePacman)
-    // moveGhostOne()
-    // moveGhostTwo()
-    // moveGhostThree()
-    // moveGhostFour()
+    moveGhostOne()
+    moveGhostTwo()
+    moveGhostThree()
+    moveGhostFour()
   }, delayStartGame)
 }
 
@@ -329,12 +336,6 @@ function addPacman() {
 }
 
 
-function updateScore(points) {
-  score += points
-  scoreElement.innerHTML = score
-}
-
-
 function clearIntervalsPacmanMoving() {
   clearInterval(intervalMoveUp)
   clearInterval(intervalMoveDown)
@@ -342,8 +343,118 @@ function clearIntervalsPacmanMoving() {
   clearInterval(intervalMoveRight)
 }
 
+
+function updateScore(points) {
+  score += points
+  scoreElement.innerHTML = score
+}
+
+
+function moveGhostOne() {
+
+  intervalGhost1 = setInterval(function() {
+    cells[ghostOneCurrentPosition].classList.remove('ghost-one')
+    // cells[ghostTwoCurrentPosition].classList.remove('ghost-blue')
+    const directions = [ghostOneCurrentPosition - width, ghostOneCurrentPosition + width, ghostOneCurrentPosition - 1, ghostOneCurrentPosition + 1]
+    const possibleMovements = directions.filter(direction => path.includes(direction))
+    ghostOneCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
+
+    cells[ghostOneCurrentPosition].classList.add('ghost-one')
+
+
+      
+  }, speedGhost)
+}
+
+
+function moveGhostTwo() {
+  setTimeout(function() {
+    cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
+    ghostTwoCurrentPosition = 178
+    cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+  }, speedGhost)
+  setTimeout(function() {
+    cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
+    ghostTwoCurrentPosition = 157
+    cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+    intervalGhost2 = setInterval(function() {
+      cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
+      // cells[ghostTwoCurrentPosition].classList.remove('ghost-blue')
+      const directions = [ghostTwoCurrentPosition - width, ghostTwoCurrentPosition + width, ghostTwoCurrentPosition - 1, ghostTwoCurrentPosition + 1]
+      const possibleMovements = directions.filter(direction => path.includes(direction))
+      ghostTwoCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
+
+      cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+
+      
+    }, speedGhost)
+  }, speedGhost * 2)
+}
+
+function moveGhostThree() {
+  setTimeout(function() {
+    cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
+    ghostThreeCurrentPosition = 199
+    cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+  }, speedGhost)
+  setTimeout(function() {
+    cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
+    ghostThreeCurrentPosition = 178
+    cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+  }, speedGhost * 2)
+  setTimeout(function() {
+    cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
+    ghostThreeCurrentPosition = 157
+    cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+    intervalGhost3 = setInterval(function() {
+      cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
+      // cells[ghostThreeCurrentPosition].classList.remove('ghost-blue')
+      const directions = [ghostThreeCurrentPosition - width, ghostThreeCurrentPosition + width, ghostThreeCurrentPosition - 1, ghostThreeCurrentPosition + 1]
+      const possibleMovements = directions.filter(direction => path.includes(direction))
+      ghostThreeCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
+
+      cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+      
+
+
+    }, speedGhost)
+  }, speedGhost * 3)
+}
+
+function moveGhostFour() {
+  setTimeout(function() {
+    cells[ghostFourCurrentPosition].classList.remove('ghost-four')
+    ghostFourCurrentPosition = 199
+    cells[ghostFourCurrentPosition].classList.add('ghost-four')
+  }, speedGhost * 2)
+  setTimeout(function() {
+    cells[ghostFourCurrentPosition].classList.remove('ghost-four')
+    ghostFourCurrentPosition = 178
+    cells[ghostFourCurrentPosition].classList.add('ghost-four')
+  }, speedGhost * 3)
+  setTimeout(function() {
+    cells[ghostFourCurrentPosition].classList.remove('ghost-four')
+    ghostFourCurrentPosition = 157
+    cells[ghostFourCurrentPosition].classList.add('ghost-four')
+    intervalGhost4 = setInterval(function() {
+      cells[ghostFourCurrentPosition].classList.remove('ghost-four')
+      // cells[ghostFourCurrentPosition].classList.remove('ghost-blue')
+      const directions = [ghostFourCurrentPosition - width, ghostFourCurrentPosition + width, ghostFourCurrentPosition - 1, ghostFourCurrentPosition + 1]
+      const possibleMovements = directions.filter(direction => path.includes(direction))
+      ghostFourCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
+
+      cells[ghostFourCurrentPosition].classList.add('ghost-four')
+      
+      
+
+    }, speedGhost)
+  }, speedGhost * 4)
+}
+
+
+
 function endGame() {
-  
+
 }
 
 
