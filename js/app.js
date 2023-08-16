@@ -160,6 +160,15 @@ function startGame() {
   setTimeout(() => textOverlay.innerHTML = '<h2>1</h2>', delayStartGame * 0.75)
   setTimeout(() => overlayContainer.style.display = 'none', delayStartGame)
 
+  // STOP PACMAN
+  document.removeEventListener('keydown', movePacman)
+
+  // STOP GHOSTS FROM MOVING
+  clearInterval(intervalGhost1)
+  clearInterval(intervalGhost2)
+  clearInterval(intervalGhost3)
+  clearInterval(intervalGhost4)
+
   // START GAME AFTER OVERLAY
   setTimeout(() => {
     resetDotsAndPowerPallets()
@@ -170,6 +179,8 @@ function startGame() {
     moveGhostThree()
     moveGhostFour()
   }, delayStartGame)
+
+  
 }
 
 function resetGame() {
