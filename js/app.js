@@ -86,7 +86,7 @@ const textOverlay = document.querySelector('.text-overlay')
 
 // AUDIOS
 
-const volumeOn = document.querySelector('.volume')
+const volumeOn = document.querySelector('.fa-solid')
 const intro = document.querySelector('#audio-intro')
 const soundPacmanDies = document.querySelector('#pacman-dies')
 const soundDot = document.querySelector('#dot')
@@ -732,6 +732,9 @@ function volumeUp() {
   soundDot.volume = 0.3
   soundPacmanDies.volume = 0.3
   sound = 'on'
+  volumeOn.classList.remove('fa-volume-off')
+  volumeOn.classList.add('fa-volume-high')
+  volumeOn.style.paddingRight = '0px'
 }
 
 function volumeDown() {
@@ -739,6 +742,9 @@ function volumeDown() {
   soundDot.volume = 0
   soundPacmanDies.volume = 0
   sound = 'off'
+  volumeOn.classList.remove('fa-volume-high')
+  volumeOn.classList.add('fa-volume-off')
+  volumeOn.style.paddingRight = '10px'
 }
 
 
