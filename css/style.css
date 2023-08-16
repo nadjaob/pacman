@@ -192,7 +192,7 @@ h1 span {
 }
 
 .power-pallet .power-pallet-ui {
-  background-color: black;
+  /* background-color: black; */
   z-index: -1;
 }
 
@@ -211,7 +211,7 @@ h1 span {
 }
 
 .dots .dots-ui {
-  background-color: black;
+  /* background-color: black; */
   z-index: -1;
 }
 

@@ -30,7 +30,7 @@ function generateGrid() {
     cell.classList.add('cell')
     cell.style.width = `${100 / width}%` // 4.76%
     cell.style.height = `${100 / width}%`
-    // cell.innerHTML = i
+    cell.innerHTML = i
     cell.dataset.index = i
     grid.appendChild(cell)
     cells.push(cell)
@@ -102,6 +102,7 @@ let pacmanCurrentPosition = 325
 const speedPacman = 300
 
 let currentDirection
+let nextDirection
 
 let intervalMoveUp
 let intervalMoveDown
@@ -220,9 +221,9 @@ function startGame() {
     resetGame()
     document.addEventListener('keydown', movePacman)
     moveGhostOne()
-    moveGhostTwo()
-    moveGhostThree()
-    moveGhostFour()
+    // moveGhostTwo()
+    // moveGhostThree()
+    // moveGhostFour()
     stopHunting()
   }, delayStartGame)
 }
@@ -282,6 +283,9 @@ function movePacman(event) {
   removePacman()
 
 
+  
+
+
   // MOVE UP
   if (key === up && path.includes(pacmanCurrentPosition - width) && currentDirection !== 'up') {
     currentDirection = 'up'
@@ -291,11 +295,29 @@ function movePacman(event) {
       
     // KEEP MOVING UP
     intervalMoveUp = setInterval(function() {
-      if (path.includes(pacmanCurrentPosition - width)) {
+      // GO NEXT POSSIBLE TO RIGHT
+      if (nextDirection === 'right' && path.includes(pacmanCurrentPosition + 1)) {
+        currentDirection = 'right'
+        clearInterval(intervalMoveUp)
         removePacman()
-        pacmanCurrentPosition -= width
+        pacmanCurrentPosition++
         addPacman()
+        intervalMoveRight = setInterval(function() {
+          keepMovingRight()
+        }, speedPacman)
+      // GO NEXT POSSIBLE TO LEFT
+      } else if (nextDirection === 'left' && path.includes(pacmanCurrentPosition - 1)) {
+        currentDirection = 'left'
+        clearInterval(intervalMoveUp)
+        removePacman()
+        pacmanCurrentPosition--
+        addPacman()
+        intervalMoveLeft = setInterval(function() {
+          keepMovingLeft()
+        }, speedPacman)
       }
+      // KEEP MOVING UP
+      keepMovingUp()
     }, speedPacman)
   }
   
@@ -309,11 +331,29 @@ function movePacman(event) {
   
     // KEEP MOVING DOWN
     intervalMoveDown = setInterval(function() {
-      if (path.includes(pacmanCurrentPosition + width)) {
+      // GO NEXT POSSIBLE TO RIGHT
+      if (nextDirection === 'right' && path.includes(pacmanCurrentPosition + 1)) {
+        currentDirection = 'right'
+        clearInterval(intervalMoveDown)
         removePacman()
-        pacmanCurrentPosition += width
+        pacmanCurrentPosition++
         addPacman()
+        intervalMoveRight = setInterval(function() {
+          keepMovingRight()
+        }, speedPacman)
+      // GO NEXT POSSIBLE TO LEFT
+      } else if (nextDirection === 'left' && path.includes(pacmanCurrentPosition - 1)) {
+        currentDirection = 'left'
+        clearInterval(intervalMoveDown)
+        removePacman()
+        pacmanCurrentPosition--
+        addPacman()
+        intervalMoveLeft = setInterval(function() {
+          keepMovingLeft()
+        }, speedPacman)
       }
+      // KEEP MOVING DOWN
+      keepMovingDown()
     }, speedPacman)
   }
   
@@ -327,20 +367,29 @@ function movePacman(event) {
   
     // KEEP MOVING LEFT
     intervalMoveLeft = setInterval(function() {
-      if (path.includes(pacmanCurrentPosition - 1)) {  
+      // GO NEXT POSSIBLE UP
+      if (nextDirection === 'up' && path.includes(pacmanCurrentPosition - width)) {
+        currentDirection = 'up'
+        clearInterval(intervalMoveLeft)
         removePacman()
-        pacmanCurrentPosition --
+        pacmanCurrentPosition -= width
         addPacman()
+        intervalMoveUp = setInterval(function() {
+          keepMovingUp()
+        }, speedPacman)
+      // GO NEXT POSSIBLE DOWN
+      } else if (nextDirection === 'down' && path.includes(pacmanCurrentPosition + width)) {
+        currentDirection = 'down'
+        clearInterval(intervalMoveLeft)
+        removePacman()
+        pacmanCurrentPosition += width
+        addPacman()
+        intervalMoveDown = setInterval(function() {
+          keepMovingDown()
+        }, speedPacman)
       }
-  
-      if (pacmanCurrentPosition === 189) {
-        setTimeout(function() {
-          removePacman()
-          pacmanCurrentPosition = 209
-          addPacman()
-        }, speedPacman / 2)
-        
-      }
+      // KEEP MOVING LEFT
+      keepMovingLeft()
     }, speedPacman)
   }
   
@@ -354,23 +403,104 @@ function movePacman(event) {
   
     // KEEP MOVING RIGHT
     intervalMoveRight = setInterval(function() {
-      if (path.includes(pacmanCurrentPosition + 1)) {
+      // GO NEXT POSSIBLE UP
+      if (nextDirection === 'up' && path.includes(pacmanCurrentPosition - width)) {
+        currentDirection = 'up'
+        clearInterval(intervalMoveRight)
         removePacman()
-        pacmanCurrentPosition++
+        pacmanCurrentPosition -= width
         addPacman()
+        intervalMoveUp = setInterval(function() {
+          keepMovingUp()
+        }, speedPacman)
+      // GO NEXT POSSIBLE DOWN
+      } else if (nextDirection === 'down' && path.includes(pacmanCurrentPosition + width)) {
+        currentDirection = 'down'
+        clearInterval(intervalMoveRight)
+        removePacman()
+        pacmanCurrentPosition += width
+        addPacman()
+        intervalMoveDown = setInterval(function() {
+          keepMovingDown()
+        }, speedPacman)
       }
-      // GO THROUGH TUNNEL
-      if (pacmanCurrentPosition === 209) {
-        setTimeout(function() {
-          removePacman()
-          pacmanCurrentPosition = 189
-          addPacman()
-        }, speedPacman / 2)
-      }
+      // KEEP MOVING RIGHT
+      keepMovingRight()
     }, speedPacman)
   }
   
   addPacman()
+
+  // TRY BETTER MOVEMENT
+
+  if (key === up) {
+    nextDirection = 'up'
+    console.log(nextDirection)
+  }
+  if (key === down) {
+    nextDirection = 'down'
+    console.log(nextDirection)
+  }
+  if (key === left) {
+    nextDirection = 'left'
+    console.log(nextDirection)
+  }
+  if (key === right) {
+    nextDirection = 'right'
+    console.log(nextDirection)
+  }
+}
+
+
+function keepMovingUp() {
+  if (path.includes(pacmanCurrentPosition - width)) {
+    removePacman()
+    pacmanCurrentPosition -= width
+    addPacman()
+  }
+}
+
+
+function keepMovingDown() {
+  if (path.includes(pacmanCurrentPosition + width)) {
+    removePacman()
+    pacmanCurrentPosition += width
+    addPacman()
+  }
+}
+
+
+function keepMovingLeft() {
+  if (path.includes(pacmanCurrentPosition - 1)) {  
+    removePacman()
+    pacmanCurrentPosition --
+    addPacman()
+  }
+
+  if (pacmanCurrentPosition === 189) {
+    setTimeout(function() {
+      removePacman()
+      pacmanCurrentPosition = 209
+      addPacman()
+    }, speedPacman / 2)    
+  }
+}
+
+
+function keepMovingRight() {
+  if (path.includes(pacmanCurrentPosition + 1)) {
+    removePacman()
+    pacmanCurrentPosition++
+    addPacman()
+  }
+  // GO THROUGH TUNNEL
+  if (pacmanCurrentPosition === 209) {
+    setTimeout(function() {
+      removePacman()
+      pacmanCurrentPosition = 189
+      addPacman()
+    }, speedPacman / 2)
+  }
 }
 
 
@@ -466,13 +596,171 @@ function updateScore(points) {
 }
 
 
+// GHOST UP DOWN RIGHT LEFT
+
+// function ghostUp() {
+//   // positionBefore = ghostOneCurrentPosition
+//   ghostOneCurrentPosition = ghostOneCurrentPosition - width
+// }
+
+// function ghostDown() {
+//   // positionBefore = ghostOneCurrentPosition
+//   ghostOneCurrentPosition = ghostOneCurrentPosition + width
+// }
+
+// function ghostRight() {
+//   // positionBefore = ghostOneCurrentPosition
+//   ghostOneCurrentPosition = ghostOneCurrentPosition + 1
+// }
+
+// function ghostLeft() {
+//   // positionBefore = ghostOneCurrentPosition
+//   ghostOneCurrentPosition = ghostOneCurrentPosition - 1
+// }
+
+
 function moveGhostOne() {
 
   intervalGhost1 = setInterval(function() {
     cells[ghostOneCurrentPosition].classList.remove('ghost-one', 'ghost-blue')
+
+    // RANDOM PATHFINDER
     const directions = [ghostOneCurrentPosition - width, ghostOneCurrentPosition + width, ghostOneCurrentPosition - 1, ghostOneCurrentPosition + 1]
     const possibleMovements = directions.filter(direction => path.includes(direction))
     ghostOneCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
+
+    // SHORTEST ROUTE GHOST ONE
+    // const topToGhost = Math.floor(ghostOneCurrentPosition / width) + 1
+    // const leftToGhost = ghostOneCurrentPosition % width + 1
+    // const topToPacman = Math.floor(pacmanCurrentPosition / width) + 1
+    // const leftToPacman = pacmanCurrentPosition % width + 1
+    // const topDistance = Math.abs(topToGhost - topToPacman)
+    // const leftDistance = Math.abs(leftToGhost - leftToPacman)
+
+    // // GHOST AND PACMAN ON VERTICAL LINE, GHOST DOWN AND PACMAN UP
+    // if (leftToGhost === leftToPacman && topToGhost > topToPacman) {
+    //   if (path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostRight()
+    //   } else {
+    //     ghostLeft()
+    //   }
+    // }
+      
+    // // GHOST UP AND PACMAN DOWN
+    // if (leftToGhost === leftToPacman && topToGhost < topToPacman) {
+    //   if (path.includes(ghostOneCurrentPosition + width)) {
+    //     ghostDown()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostRight()
+    //   } else {
+    //     ghostLeft()
+    //   }
+    // }
+
+    // TESTING NOT WORKING!
+
+    // GHOST UP AND PACMAN DOWN
+    // if (leftToGhost === leftToPacman && topToGhost < topToPacman) {
+    //   if (path.includes(ghostOneCurrentPosition + width)) {
+    //     ghostDown()
+    //   } else if (!path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostLeft()
+    //   } else if (!path.includes(ghostOneCurrentPosition - 1)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1) && path.includes(ghostOneCurrentPosition + 1 + width)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - 1) && path.includes(ghostOneCurrentPosition - 1 + width)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1) && path.includes(ghostOneCurrentPosition + 2 + width)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - 1) && path.includes(ghostOneCurrentPosition - 2 + width)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1) && path.includes(ghostOneCurrentPosition + 3 + width)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - 1) && path.includes(ghostOneCurrentPosition - 3 + width)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1) && path.includes(ghostOneCurrentPosition + 4 + width)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - 1) && path.includes(ghostOneCurrentPosition - 4 + width)) {
+    //     ghostLeft()
+    //   }
+    // }
+
+    // // GHOST AND PACMAN ON HORIZONTAL LINE, GHOST LEFT AND PACMAN RIGHT
+    // if (topToGhost === topToPacman && leftToGhost < leftToPacman) {
+    //   if (path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else {
+    //     ghostDown()
+    //   }
+    // }
+      
+    // // GHOST RIGHT AND PACMAN LEFT 
+    // if (topToGhost === topToPacman && leftToGhost > leftToPacman) {
+    //   if (path.includes(ghostOneCurrentPosition - 1)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else {
+    //     ghostDown()
+    //   }
+    // }
+
+    // // GHOST LEFT TOP AND PACMAN RIGHT BOTTOM
+    // if (leftToGhost < leftToPacman && topToGhost < topToPacman) {
+    //   if (leftDistance <= topDistance && path.includes(ghostOneCurrentPosition + width)) {
+    //     ghostDown()
+    //   } else if (path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostRight()
+    //   } else if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else {
+    //     ghostLeft()
+    //   }
+    // }
+
+    // // GHOST RIGHT TOP AND PACMAN LEFT BOTTOM
+    // if (leftToGhost > leftToPacman && topToGhost < topToPacman) {
+    //   if (leftDistance >= topDistance && path.includes(ghostOneCurrentPosition - 1)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition + width)) {
+    //     ghostDown()
+    //   } else if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else {
+    //     ghostRight
+    //   }
+    // }
+
+    // // GHOST RIGHT BOTTOM AND PACMAN TOP LEFT
+    // if (leftToPacman < leftToGhost && topToPacman < topToGhost) {
+    //   if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition - 1)) {
+    //     ghostLeft()
+    //   } else if (path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition - 1)) {
+    //     ghostLeft()
+    //   } else {
+    //     ghostRight()
+    //   }
+    // }
+
+    // // GHOST LEFT BOTTOM AND PACMAN TOP RIGHT
+    // if (leftToPacman > leftToGhost && topToPacman < topToGhost) {
+    //   if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition + 1)) {
+    //     ghostRight()
+    //   } else if (path.includes(ghostOneCurrentPosition - width)) {
+    //     ghostUp()
+    //   } else if (topDistance <= leftDistance && path.includes(ghostOneCurrentPosition + width)) {
+    //     ghostDown()
+    //   } else {
+    //     ghostLeft()
+    //   }
+    // }
 
     // CHANGE COLOR DURING HUNT
     if (mode === 'hunting' && ghostOneDied === false) {
@@ -656,7 +944,7 @@ function ghostDies() {
     ghostOneCurrentPosition = ghostOneStartPosition
     cells[ghostOneStartPosition].classList.add('ghost-one')
     ghostOneDied = true
-    moveGhostOne()
+    setTimeout(moveGhostOne, 2000)
   }
 
   // GHOST TWO
@@ -666,7 +954,7 @@ function ghostDies() {
     ghostTwoCurrentPosition = ghostTwoStartPosition
     cells[ghostTwoStartPosition].classList.add('ghost-two')
     ghostTwoDied = true
-    moveGhostTwo()
+    setTimeout(moveGhostTwo, 2000)
   }
 
   // GHOST THREE
@@ -676,7 +964,7 @@ function ghostDies() {
     ghostThreeCurrentPosition = ghostThreeStartPosition
     cells[ghostThreeStartPosition].classList.add('ghost-three')
     ghostThreeDied = true
-    moveGhostThree()
+    setTimeout(moveGhostThree, 2000)
   }
 
   // GHOST FOUR
@@ -686,7 +974,7 @@ function ghostDies() {
     ghostFourCurrentPosition = ghostFourStartPosition
     cells[ghostFourStartPosition].classList.add('ghost-four')
     ghostFourDied = true
-    moveGhostFour()
+    setTimeout(moveGhostFour, 2000)
   }
 }
 
@@ -728,11 +1016,11 @@ function turnVolumeOn() {
 }
 
 function volumeUp() {
-  intro.volume = 0.3
-  soundDot.volume = 0.3
-  soundPacmanDies.volume = 0.3
+  intro.volume = 0.05
+  soundDot.volume = 0.05
+  soundPacmanDies.volume = 0.2
   sound = 'on'
-  volumeOn.classList.remove('fa-volume-off')
+  volumeOn.classList.remove('fa-volume-xmark')
   volumeOn.classList.add('fa-volume-high')
   volumeOn.style.paddingRight = '0px'
 }
@@ -743,8 +1031,8 @@ function volumeDown() {
   soundPacmanDies.volume = 0
   sound = 'off'
   volumeOn.classList.remove('fa-volume-high')
-  volumeOn.classList.add('fa-volume-off')
-  volumeOn.style.paddingRight = '10px'
+  volumeOn.classList.add('fa-volume-xmark')
+  volumeOn.style.paddingRight = '2px'
 }
 
 
