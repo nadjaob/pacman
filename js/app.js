@@ -59,6 +59,20 @@ function generateGrid() {
 generateGrid()
 
 
+// GENERATE DOTS AND POWER PALLETS TO PLAY AGAIN
+function resetDotsAndPowerPallets() {
+  for (let i = 0; i < cellCount; i++) {
+    if (powerPallets.includes(i)) {
+      cells[i].classList.add('power-pallet')
+    }
+    if (!occupiedCells.includes(i)) {
+      cells[i].classList.add('dots')
+    }
+  } 
+}
+
+
+
 // GAME FUNCTIONALITY
 
 // ELEMENTS
@@ -73,8 +87,21 @@ const textOverlay = document.querySelector('.text-overlay')
 
 // VARIABLES
 
+// PACMAN
+
 const pacmanStartPosition = 325
 let pacmanCurrentPosition = 325
+
+const speedPacman = 300
+
+let currentDirection
+
+let intervalMoveUp
+let intervalMoveDown
+let intervalMoveLeft
+let intervalMoveRight
+
+// GHOSTS
 
 const ghostOneStartPosition = 157
 let ghostOneCurrentPosition = 157
@@ -88,6 +115,8 @@ let ghostThreeCurrentPosition = 198
 const ghostFourStartPosition = 200
 let ghostFourCurrentPosition = 200
 
+// SCORE AND LIVES
+
 let lives = 3
 let score = 0
 let goal = 1
@@ -96,7 +125,13 @@ const pointsDot = 1
 const pointsPowerPallet = 50
 const pointsGhost = 100
 
+// START GAME
+
 const delayStartGame = 6000
+
+// PATH
+
+const path = dots.concat(powerPallets) // path contains the number now
 
 
 
@@ -110,8 +145,53 @@ function startGame() {
   setTimeout(() => textOverlay.innerHTML = '<h2>1</h2>', delayStartGame * 0.75)
   setTimeout(() => overlayContainer.style.display = 'none', delayStartGame)
 
-  
+  // START GAME AFTER OVERLAY
+  setTimeout(() => {
+    resetDotsAndPowerPallets()
+    resetGame()
+    document.addEventListener('keydown', movePacman)
+    // moveGhostOne()
+    // moveGhostTwo()
+    // moveGhostThree()
+    // moveGhostFour()
+  }, delayStartGame)
+}
 
+function resetGame() {
+  // generateGrid()
+  lives = 3
+  livesElement.innerHTML = lives
+  score = 0
+  scoreElement.innerHTML = score
+  resetPacman()
+  resetGhosts()
+}
+
+// PACMAN START POSITION
+function resetPacman() {
+  cells[pacmanCurrentPosition].classList.remove('pacman')
+  pacmanCurrentPosition = pacmanStartPosition
+  cells[pacmanStartPosition].classList.add('pacman')
+  cells[pacmanCurrentPosition].classList.remove('dots')
+}
+
+// GIVE GHOSTS START POSITION
+function resetGhosts() {
+  // // REMOVE GHOSTS FROM BOARD
+  // cells[ghostOneCurrentPosition].classList.remove('ghost-one')
+  // cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
+  // cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
+  // cells[ghostFourCurrentPosition].classList.remove('ghost-four')
+  // // RELOCATE GHOSTS TO START POSITION
+  // ghostOneCurrentPosition = ghostOneStartPosition
+  // ghostTwoCurrentPosition = ghostTwoStartPosition
+  // ghostThreeCurrentPosition = ghostThreeStartPosition
+  // ghostFourCurrentPosition = ghostFourStartPosition
+  // ADD GHOSTS TO START POSITION
+  cells[ghostOneStartPosition].classList.add('ghost-one')
+  cells[ghostTwoStartPosition].classList.add('ghost-two')
+  cells[ghostThreeStartPosition].classList.add('ghost-three')
+  cells[ghostFourStartPosition].classList.add('ghost-four')
 }
 
 
@@ -122,11 +202,136 @@ function movePacman(event) {
   const down = 40
   const left = 37
   const right = 39
+
+  // PREVENTS HOLDING DOWN KEY
+  if (event.repeat) {
+    return
+  }
+
+  removePacman()
+
+
+
+
+
+  // MOVE UP
+  if (key === up && path.includes(pacmanCurrentPosition - width) && currentDirection !== 'up') {
+    currentDirection = 'up'
+    clearIntervalsPacmanMoving()
+    pacmanCurrentPosition -= width
+    addPacman()
+      
+    // KEEP MOVING UP
+    intervalMoveUp = setInterval(function() {
+      if (path.includes(pacmanCurrentPosition - width)) {
+        removePacman()
+        pacmanCurrentPosition -= width
+        addPacman()
+      }
+    }, speedPacman)
+  }
+  
+  
+  // MOVE DOWN
+  if (key === down && path.includes(pacmanCurrentPosition + width) && currentDirection !== 'down') {
+    currentDirection = 'down'
+    clearIntervalsPacmanMoving()
+    pacmanCurrentPosition += width
+    addPacman()
+  
+    // KEEP MOVING DOWN
+    intervalMoveDown = setInterval(function() {
+      if (path.includes(pacmanCurrentPosition + width)) {
+        removePacman()
+        pacmanCurrentPosition += width
+        addPacman()
+      }
+    }, speedPacman)
+  }
+  
+  
+  // MOVE LEFT
+  if (key === left && path.includes(pacmanCurrentPosition - 1) && currentDirection !== 'left') {
+    currentDirection = 'left'
+    clearIntervalsPacmanMoving()
+    pacmanCurrentPosition--
+    addPacman()
+  
+    // KEEP MOVING LEFT
+    intervalMoveLeft = setInterval(function() {
+      if (path.includes(pacmanCurrentPosition - 1)) {  
+        removePacman()
+        pacmanCurrentPosition --
+        addPacman()
+      }
+  
+      if (pacmanCurrentPosition === 189) {
+        removePacman()
+        pacmanCurrentPosition = 209
+        addPacman()
+      }
+    }, speedPacman)
+  }
+  
+  
+  // MOVE RIGHT
+  if (key === right && path.includes(pacmanCurrentPosition + 1) && currentDirection !== 'right') {
+    currentDirection = 'right'
+    clearIntervalsPacmanMoving()
+    pacmanCurrentPosition++
+    addPacman()
+  
+    // KEEP MOVING RIGHT
+    intervalMoveRight = setInterval(function() {
+      console.log('moving right')
+      if (path.includes(pacmanCurrentPosition + 1)) {
+        removePacman()
+        pacmanCurrentPosition++
+        addPacman()
+      }
+  
+      if (pacmanCurrentPosition === 209) {
+        removePacman()
+        pacmanCurrentPosition = 189
+        addPacman()
+      }
+    }, speedPacman)
+  }
+  
+  addPacman()
+}
+
+
+function removePacman() {
+  cells[pacmanCurrentPosition].classList.remove('pacman', currentDirection)
+}
+
+
+function addPacman() {
+  // PACMAN EATS DOT
+  cells[pacmanCurrentPosition].classList.add('pacman', currentDirection)
+  if (cells[pacmanCurrentPosition].classList.contains('dots')) {
+    updateScore(pointsDot)
+    goal++
+    cells[pacmanCurrentPosition].classList.remove('dots')
+  }
+}
+
+
+function updateScore(points) {
+  score += points
+  scoreElement.innerHTML = score
+}
+
+
+function clearIntervalsPacmanMoving() {
+  clearInterval(intervalMoveUp)
+  clearInterval(intervalMoveDown)
+  clearInterval(intervalMoveLeft)
+  clearInterval(intervalMoveRight)
 }
 
 
 // EVENTS
 
 startButton.addEventListener('click', startGame)
-
-document.addEventListener('keydown', movePacman)
