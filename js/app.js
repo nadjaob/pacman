@@ -211,9 +211,6 @@ function movePacman(event) {
   removePacman()
 
 
-
-
-
   // MOVE UP
   if (key === up && path.includes(pacmanCurrentPosition - width) && currentDirection !== 'up') {
     currentDirection = 'up'
@@ -315,6 +312,20 @@ function addPacman() {
     goal++
     cells[pacmanCurrentPosition].classList.remove('dots')
   }
+
+  // PACMAN EATS POWER PALLET
+  if (cells[pacmanCurrentPosition].classList.contains('power-pallet')) {
+    updateScore(pointsPowerPallet)
+    goal++
+    cells[pacmanCurrentPosition].classList.remove('power-pallet')
+    // hunt()
+    // setTimeout(stopHunting, 20000)
+  }
+
+  // PLAYER WINS WHEN GOAL REACHED
+  if (goal === dots.length + powerPallets.length) {
+    endGame()
+  }
 }
 
 
@@ -329,6 +340,10 @@ function clearIntervalsPacmanMoving() {
   clearInterval(intervalMoveDown)
   clearInterval(intervalMoveLeft)
   clearInterval(intervalMoveRight)
+}
+
+function endGame() {
+  
 }
 
 
