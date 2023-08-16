@@ -333,22 +333,38 @@ function addPacman() {
     updateScore(pointsPowerPallet)
     goal++
     cells[pacmanCurrentPosition].classList.remove('power-pallet')
-    // hunt()
+    hunt()
     // setTimeout(stopHunting, 20000)
   }
 
   // PACMAN MEETS GHOST AND EATS OR DIES
   if (pacmanCurrentPosition === ghostOneCurrentPosition) {
-    pacmanDies()
+    if (mood === 'hunting' && ghostOneDied === false) {
+      ghostDies()
+    } else {
+      pacmanDies()
+    }
   }
   if (pacmanCurrentPosition === ghostTwoCurrentPosition) {
-    pacmanDies()
+    if (mood === 'hunting' && ghostTwoDied === false) {
+      ghostDies()
+    } else {
+      pacmanDies()
+    }
   }
   if (pacmanCurrentPosition === ghostThreeCurrentPosition) {
-    pacmanDies()
+    if (mood === 'hunting' && ghostThreeDied === false) {
+      ghostDies()
+    } else {
+      pacmanDies()
+    }
   }
   if (pacmanCurrentPosition === ghostFourCurrentPosition) {
-    pacmanDies()
+    if (mood === 'hunting' && ghostFourDied === false) {
+      ghostDies()
+    } else {
+      pacmanDies()
+    }
   }
 
   // PLAYER WINS WHEN GOAL REACHED
@@ -365,6 +381,14 @@ function clearIntervalsPacmanMoving() {
   clearInterval(intervalMoveRight)
 }
 
+function hunt() {
+  mood = 'hunting'
+  ghostOneDied = false
+  ghostTwoDied = false
+  ghostThreeDied = false
+  ghostFourDied = false
+}
+
 
 function updateScore(points) {
   score += points
@@ -375,13 +399,18 @@ function updateScore(points) {
 function moveGhostOne() {
 
   intervalGhost1 = setInterval(function() {
-    cells[ghostOneCurrentPosition].classList.remove('ghost-one')
-    // cells[ghostTwoCurrentPosition].classList.remove('ghost-blue')
+    cells[ghostOneCurrentPosition].classList.remove('ghost-one', 'ghost-blue')
     const directions = [ghostOneCurrentPosition - width, ghostOneCurrentPosition + width, ghostOneCurrentPosition - 1, ghostOneCurrentPosition + 1]
     const possibleMovements = directions.filter(direction => path.includes(direction))
     ghostOneCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
-    cells[ghostOneCurrentPosition].classList.add('ghost-one')
+    // CHANGE COLOR DURING HUNT
+    if (mood === 'hunting' && ghostOneDied === false) {
+      cells[ghostOneCurrentPosition].classList.add('ghost-blue')
+      // OTHERWISE NORMAL COLOR
+    } else {
+      cells[ghostOneCurrentPosition].classList.add('ghost-one')
+    }
 
     // GHOST EATS OR DIES
     if (ghostOneCurrentPosition === pacmanCurrentPosition) {
@@ -409,13 +438,18 @@ function moveGhostTwo() {
     ghostTwoCurrentPosition = 157
     cells[ghostTwoCurrentPosition].classList.add('ghost-two')
     intervalGhost2 = setInterval(function() {
-      cells[ghostTwoCurrentPosition].classList.remove('ghost-two')
-      // cells[ghostTwoCurrentPosition].classList.remove('ghost-blue')
+      cells[ghostTwoCurrentPosition].classList.remove('ghost-two', 'ghost-blue')
       const directions = [ghostTwoCurrentPosition - width, ghostTwoCurrentPosition + width, ghostTwoCurrentPosition - 1, ghostTwoCurrentPosition + 1]
       const possibleMovements = directions.filter(direction => path.includes(direction))
       ghostTwoCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
-      cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+      // CHANGE COLOR DURING HUNT
+      if (mood === 'hunting' && ghostTwoDied === false) {
+        cells[ghostTwoCurrentPosition].classList.add('ghost-blue')
+        // OTHERWISE NORMAL COLOR
+      } else {
+        cells[ghostTwoCurrentPosition].classList.add('ghost-two')
+      }
 
       // GHOST EATS OR DIES
       if (ghostTwoCurrentPosition === pacmanCurrentPosition) {
@@ -447,13 +481,18 @@ function moveGhostThree() {
     ghostThreeCurrentPosition = 157
     cells[ghostThreeCurrentPosition].classList.add('ghost-three')
     intervalGhost3 = setInterval(function() {
-      cells[ghostThreeCurrentPosition].classList.remove('ghost-three')
-      // cells[ghostThreeCurrentPosition].classList.remove('ghost-blue')
+      cells[ghostThreeCurrentPosition].classList.remove('ghost-three', 'ghost-blue')
       const directions = [ghostThreeCurrentPosition - width, ghostThreeCurrentPosition + width, ghostThreeCurrentPosition - 1, ghostThreeCurrentPosition + 1]
       const possibleMovements = directions.filter(direction => path.includes(direction))
       ghostThreeCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
-      cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+      // CHANGE COLOR DURING HUNT
+      if (mood === 'hunting' && ghostThreeDied === false) {
+        cells[ghostThreeCurrentPosition].classList.add('ghost-blue')
+        // OTHERWISE NORMAL COLOR
+      } else {
+        cells[ghostThreeCurrentPosition].classList.add('ghost-three')
+      }
       
       // GHOST EATS OR DIES
       if (ghostThreeCurrentPosition === pacmanCurrentPosition) {
@@ -484,13 +523,18 @@ function moveGhostFour() {
     ghostFourCurrentPosition = 157
     cells[ghostFourCurrentPosition].classList.add('ghost-four')
     intervalGhost4 = setInterval(function() {
-      cells[ghostFourCurrentPosition].classList.remove('ghost-four')
-      // cells[ghostFourCurrentPosition].classList.remove('ghost-blue')
+      cells[ghostFourCurrentPosition].classList.remove('ghost-four', 'ghost-blue')
       const directions = [ghostFourCurrentPosition - width, ghostFourCurrentPosition + width, ghostFourCurrentPosition - 1, ghostFourCurrentPosition + 1]
       const possibleMovements = directions.filter(direction => path.includes(direction))
       ghostFourCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
-      cells[ghostFourCurrentPosition].classList.add('ghost-four')
+      // CHANGE COLOR DURING HUNT
+      if (mood === 'hunting' && ghostFourDied === false) {
+        cells[ghostFourCurrentPosition].classList.add('ghost-blue')
+        // OTHERWISE NORMAL COLOR
+      } else {
+        cells[ghostFourCurrentPosition].classList.add('ghost-four')
+      }
       
       // GHOST EATS OR DIES
       if (ghostFourCurrentPosition === pacmanCurrentPosition) {
