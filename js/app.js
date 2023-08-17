@@ -90,6 +90,8 @@ const volumeOn = document.querySelector('.fa-solid')
 const intro = document.querySelector('#audio-intro')
 const soundPacmanDies = document.querySelector('#pacman-dies')
 const soundDot = document.querySelector('#dot')
+const soundGhostDies = document.querySelector('#ghost-dies')
+// const soundEndGame = document.querySelector('#end-game')
 
 
 // VARIABLES
@@ -945,6 +947,7 @@ function pacmanDies() {
 // GHOSTS GO BACK TO START POSITION
 function ghostDies() {
   updateScore(pointsGhost)
+  soundGhostDies.play()
 
   // GHOST ONE
   if (pacmanCurrentPosition === ghostOneCurrentPosition) {
@@ -989,6 +992,7 @@ function ghostDies() {
 
 
 function endGame() {
+
   // STOP PACMAN
   document.removeEventListener('keydown', movePacman)
 
@@ -1001,6 +1005,8 @@ function endGame() {
   // MUSIC STOPS
   intro.pause()
   intro.currentTime = 0
+
+  
 
   // SHOW SCORE WITH TEXTOVERLAY
   setTimeout(function() {
@@ -1028,6 +1034,8 @@ function volumeUp() {
   intro.volume = 0.05
   soundDot.volume = 0.05
   soundPacmanDies.volume = 0.2
+  soundGhostDies.volume = 0.05
+  // soundEndGame.volume - 0.1
   sound = 'on'
   volumeOn.classList.remove('fa-volume-xmark')
   volumeOn.classList.add('fa-volume-high')
@@ -1038,6 +1046,8 @@ function volumeDown() {
   intro.volume = 0
   soundDot.volume = 0
   soundPacmanDies.volume = 0
+  soundGhostDies.volume = 0
+  // soundEndGame.volume = 0
   sound = 'off'
   volumeOn.classList.remove('fa-volume-high')
   volumeOn.classList.add('fa-volume-xmark')
