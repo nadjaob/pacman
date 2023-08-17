@@ -168,6 +168,8 @@ let ghostTwoDied = false
 let ghostThreeDied = false
 let ghostFourDied = false
 
+let intervalResetHunting
+
 // START GAME
 
 const delayStartGame = 6000
@@ -228,7 +230,7 @@ function startGame() {
 
   // MUSIC STOPS FROM GAME BEFORE
   intro.pause()
-  intro.currentTime = 0
+  intro.currentTime = 0.1
 
   // AUDIO INTRO
   intro.playbackRate = 0.9
@@ -546,7 +548,7 @@ function addPacman() {
     goal++
     cells[pacmanCurrentPosition].classList.remove('power-pallet')
     hunt()
-    setTimeout(stopHunting, 10000)
+    intervalResetHunting = setTimeout(stopHunting, 10000)
   }
 
   // PACMAN MEETS GHOST AND EATS OR DIES
@@ -600,6 +602,7 @@ function hunt() {
   ghostThreeDied = false
   ghostFourDied = false
   intro.playbackRate = 1.5
+  clearInterval(intervalResetHunting)
 }
 
 
@@ -664,6 +667,14 @@ function ghost4Left() {
 function moveGhostOne() {
 
   intervalGhost1 = setInterval(function() {
+
+    // NOT GOING THROUGH TUNNEL
+    if (ghostOneCurrentPosition === 209) {
+      position1Before = 210
+    }
+    if (ghostOneCurrentPosition === 189) {
+      position1Before = 188
+    }
 
     cells[ghostOneCurrentPosition].classList.remove('ghost-one', 'ghost-blue')
 
@@ -920,6 +931,15 @@ function moveGhostFour() {
     ghostFourCurrentPosition = 157
     cells[ghostFourCurrentPosition].classList.add('ghost-four')
     intervalGhost4 = setInterval(function() {
+
+      // NOT GOING THROUGH TUNNEL
+      if (ghostFourCurrentPosition === 209) {
+        position4Before = 210
+      }
+      if (ghostFourCurrentPosition === 189) {
+        position4Before = 188
+      }
+
       cells[ghostFourCurrentPosition].classList.remove('ghost-four', 'ghost-blue')
       
       // const directions = [ghostFourCurrentPosition - width, ghostFourCurrentPosition + width, ghostFourCurrentPosition - 1, ghostFourCurrentPosition + 1]
