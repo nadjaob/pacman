@@ -267,7 +267,7 @@ h1 span {
 }
 
 .ghost-blue {
-  background-image: url('../images/blue-ghost.png');
+  background-image: url('../images/ghost-blue-flash.gif');
   background-size: contain;
 }
 
@@ -275,9 +275,8 @@ h1 span {
 /* PACMAN */
 
 .pacman {
-  background-image: url('../images/pacman.gif');
+  background-image: url('../images/pacman2.gif');
   background-size: contain;
-  transform: rotate(180deg);
 }
 
 .up {
@@ -289,7 +288,7 @@ h1 span {
 }
 
 .left {
-  transform: rotate(180deg);
+  transform: scaleX(-1);
 }
 
 .right {

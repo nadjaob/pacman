@@ -131,7 +131,7 @@ let ghostThreeCurrentPosition = 198
 const ghostFourStartPosition = 200
 let ghostFourCurrentPosition = 200
 
-const speedGhost = 400
+const speedGhost = 300
 
 let intervalGhost1
 let intervalGhost2
@@ -178,6 +178,13 @@ let intervalGameStart
 // PATH
 
 const path = dots.concat(powerPallets) // path contains the number now
+
+// PATH UPPER HALF
+
+const upperPath = path.filter(cell => cell < 245 && cell !== 214 && cell !== 226 && cell !== 235)
+const lowerPath = path.filter(cell => cell > 153 && cell !== 163 && cell !== 172 && cell !== 184)
+const pathGhost = path.filter(cell => cell !== 325)
+
 
 // SOUND
 
@@ -227,6 +234,8 @@ function startGame() {
   position2Before = 178
   position3Before = 178
   position4Before = 178
+
+  nextDirection = 'none'
 
   // MUSIC STOPS FROM GAME BEFORE
   intro.pause()
@@ -693,11 +702,11 @@ function moveGhostOne() {
 
     // GHOST AND PACMAN ON VERTICAL LINE, GHOST DOWN AND PACMAN UP
     if (leftToGhost === leftToPacman && topToGhost > topToPacman) {
-      if (path.includes(ghostOneCurrentPosition - width)) {
+      if (pathGhost.includes(ghostOneCurrentPosition - width)) {
         ghost1Up()
-      } else if (path.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
         ghost1Right()
-      } else if (path.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
         ghost1Left()
       } else {
         ghost1Down()
@@ -706,11 +715,11 @@ function moveGhostOne() {
       
     // GHOST UP AND PACMAN DOWN
     if (leftToGhost === leftToPacman && topToGhost < topToPacman) {
-      if (path.includes(ghostOneCurrentPosition + width)) {
+      if (pathGhost.includes(ghostOneCurrentPosition + width)) {
         ghost1Down()
-      } else if (path.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
         ghost1Right()
-      } else if (path.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
         ghost1Left()
       } else {
         ghost1Up()
@@ -719,11 +728,11 @@ function moveGhostOne() {
 
     // GHOST AND PACMAN ON HORIZONTAL LINE, GHOST LEFT AND PACMAN RIGHT
     if (topToGhost === topToPacman && leftToGhost < leftToPacman) {
-      if (path.includes(ghostOneCurrentPosition + 1)) {
+      if (pathGhost.includes(ghostOneCurrentPosition + 1)) {
         ghost1Right()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
-      } else if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
       } else {
         ghost1Left()
@@ -732,11 +741,11 @@ function moveGhostOne() {
       
     // GHOST RIGHT AND PACMAN LEFT 
     if (topToGhost === topToPacman && leftToGhost > leftToPacman) {
-      if (path.includes(ghostOneCurrentPosition - 1)) {
+      if (pathGhost.includes(ghostOneCurrentPosition - 1)) {
         ghost1Left()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
-      } else if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
       } else {
         ghost1Right()
@@ -745,11 +754,11 @@ function moveGhostOne() {
 
     // GHOST LEFT TOP AND PACMAN RIGHT BOTTOM
     if (leftToGhost < leftToPacman && topToGhost < topToPacman) {
-      if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
-      } else if (path.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
         ghost1Right()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
       } else {
         ghost1Left()
@@ -758,11 +767,11 @@ function moveGhostOne() {
 
     // GHOST RIGHT TOP AND PACMAN LEFT BOTTOM
     if (leftToGhost > leftToPacman && topToGhost < topToPacman) {
-      if (path.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
+      if (pathGhost.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
         ghost1Left()
-      } else if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
       } else {
         ghost1Right()
@@ -771,11 +780,11 @@ function moveGhostOne() {
 
     // GHOST RIGHT BOTTOM AND PACMAN TOP LEFT
     if (leftToPacman < leftToGhost && topToPacman < topToGhost) {
-      if (path.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
+      if (pathGhost.includes(ghostOneCurrentPosition - 1) && position1Before !== ghostOneCurrentPosition - 1) {
         ghost1Left()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
-      } else if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
       } else {
         ghost1Right()
@@ -784,11 +793,11 @@ function moveGhostOne() {
 
     // GHOST LEFT BOTTOM AND PACMAN TOP RIGHT
     if (leftToPacman > leftToGhost && topToPacman < topToGhost) {
-      if (path.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
+      if (pathGhost.includes(ghostOneCurrentPosition + 1) && position1Before !== ghostOneCurrentPosition + 1) {
         ghost1Right()
-      } else if (path.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition - width) && position1Before !== ghostOneCurrentPosition - width) {
         ghost1Up()
-      } else if (path.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
+      } else if (pathGhost.includes(ghostOneCurrentPosition + width) && position1Before !== ghostOneCurrentPosition + width) {
         ghost1Down()
       } else {
         ghost1Left()
@@ -837,7 +846,7 @@ function moveGhostTwo() {
 
       cells[ghostTwoCurrentPosition].classList.remove('ghost-two', 'ghost-blue')
       const directions = [ghostTwoCurrentPosition - width, ghostTwoCurrentPosition + width, ghostTwoCurrentPosition - 1, ghostTwoCurrentPosition + 1]
-      const possibleMovements = directions.filter(direction => path.includes(direction) && direction !== position2Before)
+      const possibleMovements = directions.filter(direction => upperPath.includes(direction) && direction !== position2Before)
       position2Before = ghostTwoCurrentPosition
       ghostTwoCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
@@ -890,7 +899,7 @@ function moveGhostThree() {
 
       cells[ghostThreeCurrentPosition].classList.remove('ghost-three', 'ghost-blue')
       const directions = [ghostThreeCurrentPosition - width, ghostThreeCurrentPosition + width, ghostThreeCurrentPosition - 1, ghostThreeCurrentPosition + 1]
-      const possibleMovements = directions.filter(direction => path.includes(direction) && direction !== position3Before)
+      const possibleMovements = directions.filter(direction => lowerPath.includes(direction) && direction !== position3Before)
       position3Before = ghostThreeCurrentPosition
       ghostThreeCurrentPosition = possibleMovements[Math.floor(Math.random() * possibleMovements.length)]
 
@@ -956,11 +965,11 @@ function moveGhostFour() {
 
       // GHOST AND PACMAN ON VERTICAL LINE, GHOST DOWN AND PACMAN UP
       if (leftToGhost4 === leftToPacman && topToGhost4 > topToPacman) {
-        if (path.includes(ghostFourCurrentPosition - width)) {
+        if (pathGhost.includes(ghostFourCurrentPosition - width)) {
           ghost4Up()
-        } else if (path.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
           ghost4Left()
-        } else if (path.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
           ghost4Right()
         } else {
           ghost4Down()
@@ -969,11 +978,11 @@ function moveGhostFour() {
         
       // GHOST UP AND PACMAN DOWN
       if (leftToGhost4 === leftToPacman && topToGhost4 < topToPacman) {
-        if (path.includes(ghostFourCurrentPosition + width)) {
+        if (pathGhost.includes(ghostFourCurrentPosition + width)) {
           ghost4Down()
-        } else if (path.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
           ghost4Left()
-        } else if (path.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
           ghost4Right()
         } else {
           ghost4Up()
@@ -982,11 +991,11 @@ function moveGhostFour() {
 
       // GHOST AND PACMAN ON HORIZONTAL LINE, GHOST LEFT AND PACMAN RIGHT
       if (topToGhost4 === topToPacman && leftToGhost4 < leftToPacman) {
-        if (path.includes(ghostFourCurrentPosition + 1)) {
+        if (pathGhost.includes(ghostFourCurrentPosition + 1)) {
           ghost4Right()
-        } else if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
-        } else if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
         } else {
           ghost4Left()
@@ -995,11 +1004,11 @@ function moveGhostFour() {
         
       // GHOST RIGHT AND PACMAN LEFT 
       if (topToGhost4 === topToPacman && leftToGhost4 > leftToPacman) {
-        if (path.includes(ghostFourCurrentPosition - 1)) {
+        if (pathGhost.includes(ghostFourCurrentPosition - 1)) {
           ghost4Left()
-        } else if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
-        } else if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
         } else {
           ghost4Right()
@@ -1008,11 +1017,11 @@ function moveGhostFour() {
 
       // GHOST LEFT TOP AND PACMAN RIGHT BOTTOM
       if (leftToGhost4 < leftToPacman && topToGhost4 < topToPacman) {
-        if (path.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
+        if (pathGhost.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
           ghost4Right()
-        } else if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
-        } else if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
         } else {
           ghost4Left()
@@ -1021,11 +1030,11 @@ function moveGhostFour() {
 
       // GHOST RIGHT TOP AND PACMAN LEFT BOTTOM
       if (leftToGhost4 > leftToPacman && topToGhost4 < topToPacman) {
-        if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
-        } else if (path.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
           ghost4Left()
-        } else if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
         } else {
           ghost4Right()
@@ -1034,11 +1043,11 @@ function moveGhostFour() {
 
       // GHOST RIGHT BOTTOM AND PACMAN TOP LEFT
       if (leftToPacman < leftToGhost4 && topToPacman < topToGhost4) {
-        if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
-        } else if (path.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition - 1) && position4Before !== ghostFourCurrentPosition - 1) {
           ghost4Left()
-        } else if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
         } else {
           ghost4Right()
@@ -1047,11 +1056,11 @@ function moveGhostFour() {
 
       // GHOST LEFT BOTTOM AND PACMAN TOP RIGHT
       if (leftToPacman > leftToGhost4 && topToPacman < topToGhost4) {
-        if (path.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
+        if (pathGhost.includes(ghostFourCurrentPosition - width) && position4Before !== ghostFourCurrentPosition - width) {
           ghost4Up()
-        } else if (path.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + 1) && position4Before !== ghostFourCurrentPosition + 1) {
           ghost4Right()
-        } else if (path.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
+        } else if (pathGhost.includes(ghostFourCurrentPosition + width) && position4Before !== ghostFourCurrentPosition + width) {
           ghost4Down()
         } else {
           ghost4Left()
