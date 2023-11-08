@@ -50,7 +50,7 @@ This was a solo project which was planned, designed and built within one week. I
 
 ## Brief
 
-### Your app must:
+### Your app must
 
 * **Render a game in the browser**
 * **Be built on a grid: do not use HTML Canvas for this**
@@ -60,8 +60,6 @@ This was a solo project which was planned, designed and built within one week. I
 * Use **Javascript** for **DOM manipulation**
 * **Deploy your game online**, where the rest of the world can access it (we will do this together at the end of the project)
 * Use **semantic markup** for HTML and CSS (adhere to best practices)
-
----
 
 ### Necessary Deliverables
 
